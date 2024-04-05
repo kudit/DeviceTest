@@ -19,10 +19,10 @@ let package = Package(
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(
-            name: "Device Library", // has to be named different from the iOSApplication or Swift Playgrounds won't open correctly
-            targets: ["Device"]
-        ),
+//        .library(
+//            name: "Device Library", // has to be named different from the iOSApplication or Swift Playgrounds won't open correctly
+//            targets: ["Device"]
+//        ),
         .iOSApplication(
             name: "Device", // needs to match package name to open properly in Swift Playgrounds
             targets: ["DeviceTestAppModule"],
@@ -51,19 +51,19 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
 
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .target(
-            name: "Device",
-            path: "."
-			,exclude: ["Tests","Development"]
-            ,resources: [.copy("Device/Resources")]
-        ),
+//        .target(
+//            name: "Device",
+//            path: "."
+//			,exclude: ["Tests","Development"]
+//            ,resources: [.copy("Sources/Resources")]
+//        ),
         .executableTarget(
             name: "DeviceTestAppModule",
-            dependencies: [
-                "Device"
-            ],
-            path: "Development",
-//			path: ".",
+//            dependencies: [
+//                "Device"
+//            ],
+//            path: "Development",
+			path: ".",
 //			exclude: ["Sources","Tests","Resources"],
 //			exclude: ["Sources","Tests"],
 //			exclude: ["Device.xcodeproj/*"],
@@ -74,12 +74,12 @@ let package = Package(
                 .enableUpcomingFeature("BareSlashRegexLiterals")
             ]
         ),
-        .testTarget(
-            name: "DeviceTests",
-            dependencies: [
-                "Device"
-            ],
-            path: "Tests"
-        )
+//        .testTarget(
+//            name: "DeviceTests",
+//            dependencies: [
+//                "Device2"
+//            ],
+//            path: "Tests"
+//        )
     ]
 )
