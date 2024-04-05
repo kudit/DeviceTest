@@ -43,13 +43,13 @@ public extension Image {
         if UIImage(systemName: symbolName) != nil {
             self.init(systemName: symbolName)
         } else {
-            self.init(symbolName)
+            self.init(symbolName, bundle: Bundle.module)
         }
 #elseif canImport(AppKit)
         if NSImage(systemSymbolName: symbolName, accessibilityDescription: nil) != nil {
             self.init(systemName: symbolName)
         } else {
-            self.init(symbolName)
+            self.init(symbolName, bundle: Bundle.module)
         }
 #endif
     }
@@ -87,7 +87,7 @@ public extension Label where Title == Text, Icon == Image {
 #Preview("Icons & Labels") {
     VStack {
         Image(symbolName: "star")
-        Image(symbolName: "nfc")
+        Image(symbolName: "notch")
         Label("Foo", symbolName: "star.fill")
         Label("Bar", symbolName: "roundedcorners")
     }.font(.title)

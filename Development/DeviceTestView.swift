@@ -1,7 +1,5 @@
 import SwiftUI
-#if canImport(Device) // since this is needed in XCode but is unavailable in Playgrounds.
 import Device
-#endif
 
 extension Device.Idiom {
     var color: Color {

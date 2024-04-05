@@ -55,17 +55,17 @@ let package = Package(
             name: "Device",
             path: "."
 			,exclude: ["Tests","Development"]
-            ,resources: [
-            	.process("Resources"),
-	        ]
+//            ,resources: [
+//            	.process("Resources"),
+//	        ]
         ),
         .executableTarget(
             name: "DeviceTestAppModule",
             dependencies: [
                 "Device"
             ],
-            path: ".",
-			exclude: ["Sources","Tests"], // include Resources
+            path: "Development",
+//			exclude: ["Sources","Tests","Resources"],
 //			exclude: ["Device.xcodeproj/*"],
 //            resources: [
 //                .process("Resources")
