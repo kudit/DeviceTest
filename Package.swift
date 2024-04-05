@@ -56,7 +56,7 @@ let package = Package(
             path: "."
 			,exclude: ["Tests","Development"]
             ,resources: [
-            	.copy("Resources/SymbolAssets.xcassets/notch.symbolset"),
+            	.copy("Resources"),
 	        ]
         ),
         .executableTarget(
