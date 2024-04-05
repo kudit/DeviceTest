@@ -43,15 +43,36 @@ public extension Image {
         if UIImage(systemName: symbolName) != nil {
             self.init(systemName: symbolName)
         } else {
-            self.init(symbolName)
+            self.init(symbolName, bundle: Bundle.module)
         }
 #elseif canImport(AppKit)
         if NSImage(systemSymbolName: symbolName, accessibilityDescription: nil) != nil {
             self.init(systemName: symbolName)
         } else {
-            self.init(symbolName)
+            self.init(symbolName, bundle: Bundle.module)
         }
 #endif
+    }
+}
+
+public extension String {
+    func safeSymbolName(fallback: String = "questionmark.square.fill") -> String {
+#if canImport(UIKit)
+        if UIImage(systemName: self) == nil {
+            // check for asset
+            if UIImage(named: self, in: Bundle.module, compatibleWith: nil) == nil {
+                return fallback
+            }
+        }
+#elseif canImport(AppKit)
+        if NSImage(systemSymbolName: self, accessibilityDescription: nil) != nil {
+            // check for asset
+            if NSImage(named: self, in: Bundle.module, compatibleWith: nil) == nil {
+                return fallback
+            }
+        }
+#endif
+        return self
     }
 }
 
@@ -68,41 +89,19 @@ public extension Label where Title == Text, Icon == Image {
         _ titleKey: String,
         symbolName: String
     ) {
-#if canImport(UIKit)
-        if UIImage(systemName: symbolName) != nil {
-            self.init(titleKey, systemImage: symbolName)
-        } else {
-            self.init(titleKey, image: symbolName)
-        }
-#elseif canImport(AppKit)
-        if NSImage(systemSymbolName: symbolName, accessibilityDescription: nil) != nil {
-            self.init(titleKey, systemImage: symbolName)
-        } else {
-            self.init(titleKey, image: symbolName)
-        }
-#endif
+        self.init(title: {
+            Text(titleKey)
+        }, icon: {
+            Image(symbolName: symbolName)  
+        })
     }
 }
 
-#Preview("Icons & Labels") {
-    VStack {
-        Image(symbolName: "star")
-        Image(symbolName: "notch")
-        Label("Foo", symbolName: "star.fill")
-        Label("Bar", symbolName: "roundedcorners")
-    }.font(.title)
-}
-
-public struct DeviceInfoView: View {
-    public var device: DeviceType
-
-    public init(device: any DeviceType) {
-        self.device = device
-    }
-    
-    var capabilitiesText: some View {
+public struct CapabilitiesTextView: View {
+    @State public var capabilities: Capabilities
+    public var body: some View {
         var output = Text("")
-        for capability in device.capabilities.sorted {
+        for capability in capabilities.sorted {
             // don't show screen icon since not really helpful
             if case .screen = capability {}
             // don't show mac form either since redundant
@@ -121,7 +120,34 @@ public struct DeviceInfoView: View {
         }
         return output
     }
+}
 
+#Preview("Capabilities") {
+    VStack {
+        Image(symbolName: "star")
+        Image(symbolName: "notch")
+        Label("Foo", symbolName: "star.fill")
+        Label("Bar", symbolName: "roundedcorners")
+        Divider()
+        CapabilitiesTextView(capabilities: Set(Capability.allCases))
+    }
+        .font(.largeTitle)
+        .padding()
+        .padding()
+        .padding()
+        .padding()
+        .padding()
+        .padding()
+        .padding()
+}
+
+public struct DeviceInfoView: View {
+    public var device: DeviceType
+
+    public init(device: any DeviceType) {
+        self.device = device
+    }
+    
     public var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
@@ -135,7 +161,7 @@ public struct DeviceInfoView: View {
                     }
                 }
                 HStack {
-                    capabilitiesText
+                    CapabilitiesTextView(capabilities: device.capabilities)
                 }
                 .font(.caption)
             }
@@ -156,37 +182,6 @@ public struct DeviceInfoView: View {
                 }
             }
         }
-    }
-}
-
-#Preview("Capabilities") {
-    DeviceInfoView(device: Device(identifier: "iPhone16,2"))
-        .padding()
-        .padding()
-        .padding()
-        .padding()
-        .padding()
-        .padding()
-}
-
-public extension String {
-    func safeSymbolName(fallback: String = "questionmark.square.fill") -> String {
-#if canImport(UIKit)
-        if UIImage(systemName: self) == nil {
-            // check for asset
-            if UIImage(named: self) == nil {
-                return fallback
-            }
-        }
-#elseif canImport(AppKit)
-        if NSImage(systemSymbolName: self, accessibilityDescription: nil) != nil {
-            // check for asset
-            if NSImage(named: self) == nil {
-                return fallback
-            }
-        }
-#endif
-        return self
     }
 }
 

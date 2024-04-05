@@ -56,7 +56,7 @@ let package = Package(
             path: "."
 			,exclude: ["Tests","Development"]
             ,resources: [
-            	.process("Resources"),
+            	.copy("Resources/SymbolAssets.xcassets/notch.symbolset"),
 	        ]
         ),
         .executableTarget(
@@ -64,10 +64,10 @@ let package = Package(
             dependencies: [
                 "Device"
             ],
-//            path: "Development",
-			path: ".",
+            path: "Development",
+//			path: ".",
 //			exclude: ["Sources","Tests","Resources"],
-			exclude: ["Sources","Tests"],
+//			exclude: ["Sources","Tests"],
 //			exclude: ["Device.xcodeproj/*"],
 //            resources: [
 //                .process("Resources")
