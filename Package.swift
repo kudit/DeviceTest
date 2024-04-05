@@ -55,7 +55,7 @@ let package = Package(
             name: "Device",
             path: "Sources",
             resources: [
-            	.process("../Development/Resources/Assets.xcassets"),
+            	.copy("SymbolAssets.xcassets"),
 	        ]
         ),
         .executableTarget(
