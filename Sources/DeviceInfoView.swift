@@ -36,6 +36,11 @@ extension Color {
     }
 }
 
+public extension Bundle {
+    static var mod = Bundle.module
+//    static var mod = Bundle(for: ActualHardwareDevice.self)
+}
+
 // for switching between asset images and systemImages
 public extension Image {
     init(symbolName: String) {
@@ -43,13 +48,13 @@ public extension Image {
         if UIImage(systemName: symbolName) != nil {
             self.init(systemName: symbolName)
         } else {
-            self.init(symbolName, bundle: Bundle.module) // Bundle(for: ActualHardwareDevice.self)
+            self.init(symbolName, bundle: Bundle.mod)
         }
 #elseif canImport(AppKit)
         if NSImage(systemSymbolName: symbolName, accessibilityDescription: nil) != nil {
             self.init(systemName: symbolName)
         } else {
-            self.init(symbolName, bundle: Bundle.module)
+            self.init(symbolName, bundle: Bundle.mod)
         }
 #endif
     }
@@ -60,14 +65,14 @@ public extension String {
 #if canImport(UIKit)
         if UIImage(systemName: self) == nil {
             // check for asset
-            if UIImage(named: self, in: Bundle.module, compatibleWith: nil) == nil {
+            if UIImage(named: self, in: Bundle.mod, compatibleWith: nil) == nil {
                 return fallback
             }
         }
 #elseif canImport(AppKit)
         if NSImage(systemSymbolName: self, accessibilityDescription: nil) != nil {
             // check for asset
-            if NSImage(named: self, in: Bundle.module, compatibleWith: nil) == nil {
+            if NSImage(named: self, in: Bundle.mod, compatibleWith: nil) == nil {
                 return fallback
             }
         }
