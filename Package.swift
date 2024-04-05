@@ -53,14 +53,19 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "Device",
-            path: "Sources"
+            path: "."
+			,exclude: ["Tests","Development"]
+            ,resources: [
+            	.process("Resources"),
+	        ]
         ),
         .executableTarget(
             name: "DeviceTestAppModule",
             dependencies: [
                 "Device"
             ],
-            path: "Development",
+            path: ".",
+			exclude: ["Sources","Tests"], // include Resources
 //			exclude: ["Device.xcodeproj/*"],
 //            resources: [
 //                .process("Resources")
