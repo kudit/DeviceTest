@@ -174,14 +174,14 @@ public extension String {
 #if canImport(UIKit)
         if UIImage(systemName: self) == nil {
             // check for asset
-            if UIImage(named: self) == nil {
+            if UIImage(named: self, in: Bundle.module, compatibleWith: nil) == nil {
                 return fallback
             }
         }
 #elseif canImport(AppKit)
         if NSImage(systemSymbolName: self, accessibilityDescription: nil) != nil {
             // check for asset
-            if NSImage(named: self) == nil {
+            if NSImage(named: self, in: Bundle.module, compatibleWith: nil) == nil {
                 return fallback
             }
         }
