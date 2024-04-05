@@ -43,13 +43,13 @@ public extension Image {
         if UIImage(systemName: symbolName) != nil {
             self.init(systemName: symbolName)
         } else {
-            self.init(symbolName, bundle: Bundle.module)
+            self.init(symbolName)
         }
 #elseif canImport(AppKit)
         if NSImage(systemSymbolName: symbolName, accessibilityDescription: nil) != nil {
             self.init(systemName: symbolName)
         } else {
-            self.init(symbolName, bundle: Bundle.module)
+            self.init(symbolName)
         }
 #endif
     }
@@ -174,14 +174,14 @@ public extension String {
 #if canImport(UIKit)
         if UIImage(systemName: self) == nil {
             // check for asset
-            if UIImage(named: self, in: Bundle.module, compatibleWith: nil) == nil {
+            if UIImage(named: self) == nil {
                 return fallback
             }
         }
 #elseif canImport(AppKit)
         if NSImage(systemSymbolName: self, accessibilityDescription: nil) != nil {
             // check for asset
-            if NSImage(named: self, in: Bundle.module, compatibleWith: nil) == nil {
+            if NSImage(named: self) == nil {
                 return fallback
             }
         }
