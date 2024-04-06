@@ -4,25 +4,25 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>DeviceTest.xcscheme_^#shared#^_</key>
+		<key>Device Library.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>Device.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>DeviceTest.swiftpm-Package.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>DeviceWatchTest Watch App.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>B5C1B61C2BAB7997001D5CFA</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B5EB67E92BC1F36F005DAB8C</key>
+		<key>DeviceTest.swiftpm</key>
 		<dict>
 			<key>primary</key>
 			<true/>

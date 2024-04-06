@@ -1,6 +1,47 @@
 import SwiftUI
 import Device
 
+extension Label where Title == Text, Icon == Image {
+    
+    /// Creates a label with an icon image and a title generated from a
+    /// localized string.
+    ///
+    /// - Parameters:
+    ///    - titleKey: A title generated from a string. // TODO: LocalizeStringKey instead?
+    ///    - symbolName: The name of the symbol resource to lookup (either system or custom included asset).
+    init(
+        _ titleKey: String,
+        symbolName: String
+    ) {
+        self.init(title: {
+            Text(titleKey)
+        }, icon: {
+            Image(symbolName: symbolName)  
+        })
+    }
+}
+
+#Preview("Capabilities") {
+    VStack {
+        Image(symbolName: "star")
+        Image(symbolName: "notch")
+        Image(symbolName: "bad")
+        Label("Foo", symbolName: "star.fill")
+        Label("Bar", symbolName: "roundedcorners")
+        Label("Baz", symbolName: "bad")
+        Divider()
+        CapabilitiesTextView(capabilities: Set(Capability.allCases))
+    }
+    .font(.largeTitle)
+    .padding()
+    .padding()
+    .padding()
+    .padding()
+    .padding()
+    .padding()
+    .padding()
+}
+
 extension Device.Idiom {
     var color: Color {
         switch self {
@@ -305,10 +346,3 @@ public struct DeviceTestView: View {
 #endif
     }
 }
-
-#Preview("DeviceTestView") {
-    DeviceTestView()
-}
-
-
-

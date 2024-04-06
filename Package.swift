@@ -53,9 +53,8 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "Device",
-            path: "."
-			,exclude: ["Tests","Development"]
-            ,resources: [.copy("Device/Resources")]
+            path: "Sources",
+            resources: [.process("Resources")]
         ),
         .executableTarget(
             name: "DeviceTestAppModule",
@@ -63,9 +62,6 @@ let package = Package(
                 "Device"
             ],
             path: "Development",
-//			path: ".",
-//			exclude: ["Sources","Tests","Resources"],
-//			exclude: ["Sources","Tests"],
 //			exclude: ["Device.xcodeproj/*"],
 //            resources: [
 //                .process("Resources")
@@ -74,12 +70,12 @@ let package = Package(
                 .enableUpcomingFeature("BareSlashRegexLiterals")
             ]
         ),
-//        .testTarget(
-//            name: "DeviceTests",
-//            dependencies: [
-//                "Device"
-//            ],
-//            path: "Tests"
-//        ),
+        .testTarget(
+            name: "DeviceTests",
+            dependencies: [
+                "Device"
+            ],
+            path: "Tests"
+        ),
     ]
 )

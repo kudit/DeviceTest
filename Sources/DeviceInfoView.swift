@@ -7,6 +7,7 @@
 
 #if canImport(SwiftUI)
 import SwiftUI
+import Foundation
 
 // Normally would just use KuditFrameworks but just in case that isn't available...
 extension Color {
@@ -36,74 +37,54 @@ extension Color {
     }
 }
 
-public extension Bundle {
-    static var mod = Bundle.module
-//    static var mod = Bundle(for: ActualHardwareDevice.self)
-}
-
 // for switching between asset images and systemImages
 public extension Image {
     init(symbolName: String) {
-#if canImport(UIKit)
-        if UIImage(systemName: symbolName) != nil {
+        let symbolName = symbolName.safeSymbolName()
+        if .nativeSymbolCheck(symbolName) {
             self.init(systemName: symbolName)
         } else {
-            self.init(symbolName, bundle: Bundle.mod)
+            // get module image asset if possible
+            self.init(symbolName, bundle: Bundle.module)
         }
-#elseif canImport(AppKit)
-        if NSImage(systemSymbolName: symbolName, accessibilityDescription: nil) != nil {
-            self.init(systemName: symbolName)
-        } else {
-            self.init(symbolName, bundle: Bundle.mod)
-        }
-#endif
     }
 }
-
-public extension String {
+/// helper for making sure symbolName: function always returns an actual image and never `nil`.
+extension String {
     func safeSymbolName(fallback: String = "questionmark.square.fill") -> String {
-#if canImport(UIKit)
-        if UIImage(systemName: self) == nil {
+        if !.nativeSymbolCheck(self) {
             // check for asset
-            if UIImage(named: self, in: Bundle.mod, compatibleWith: nil) == nil {
+            if !.nativeLocalCheck(self) {
                 return fallback
             }
         }
-#elseif canImport(AppKit)
-        if NSImage(systemSymbolName: self, accessibilityDescription: nil) != nil {
-            // check for asset
-            if NSImage(named: self, in: Bundle.mod, compatibleWith: nil) == nil {
-                return fallback
-            }
-        }
-#endif
         return self
     }
 }
-
-//@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-public extension Label where Title == Text, Icon == Image {
-
-    /// Creates a label with an icon image and a title generated from a
-    /// localized string.
-    ///
-    /// - Parameters:
-    ///    - titleKey: A title generated from a string. // TODO: LocalizeStringKey instead?
-    ///    - symbolName: The name of the symbol resource to lookup (either system or custom included asset).
-    init(
-        _ titleKey: String,
-        symbolName: String
-    ) {
-        self.init(title: {
-            Text(titleKey)
-        }, icon: {
-            Image(symbolName: symbolName)  
-        })
+extension Bool {
+    static func nativeSymbolCheck(_ symbolName: String) -> Bool {
+#if canImport(UIKit)
+        return UIImage(systemName: symbolName) != nil
+#elseif canImport(AppKit)
+        return NSImage(systemSymbolName: symbolName, accessibilityDescription: nil) != nil
+#endif
+    }
+    static func nativeLocalCheck(_ symbolName: String) -> Bool {
+#if canImport(UIKit)
+        return UIImage(named: symbolName, in: Bundle.module, compatibleWith: nil) != nil
+#elseif canImport(AppKit)
+        return NSImage(named: symbolName, in: Bundle.module) != nil
+#endif
     }
 }
 
 public struct CapabilitiesTextView: View {
     @State public var capabilities: Capabilities
+    
+    public init(capabilities: Capabilities) {
+        self.capabilities = capabilities
+    }
+    
     public var body: some View {
         var output = Text("")
         for capability in capabilities.sorted {
@@ -120,30 +101,11 @@ public struct CapabilitiesTextView: View {
             // and watches don't need watch size
             else if case .watchSize = capability {}
             else {
-                output = output + Text(Image(symbolName: capability.symbolName.safeSymbolName())) + Text(" ")
+                output = output + Text(Image(symbolName: capability.symbolName)) + Text(" ")
             }
         }
         return output
     }
-}
-
-#Preview("Capabilities") {
-    VStack {
-        Image(symbolName: "star")
-        Image(symbolName: "notch")
-        Label("Foo", symbolName: "star.fill")
-        Label("Bar", symbolName: "roundedcorners")
-        Divider()
-        CapabilitiesTextView(capabilities: Set(Capability.allCases))
-    }
-        .font(.largeTitle)
-        .padding()
-        .padding()
-        .padding()
-        .padding()
-        .padding()
-        .padding()
-        .padding()
 }
 
 public struct DeviceInfoView: View {
