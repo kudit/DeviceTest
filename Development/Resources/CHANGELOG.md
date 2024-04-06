@@ -1,6 +1,6 @@
 # ChangeLog
 
-v2.0.5 4/3/2024 Fixed so works on macOS.  Fixed so works in Swift Playgrounds (had to bring minimum iOS level up to 15.2).  Renamed projects in Package.swift to fix so previews load consistently in Swift Playgrounds and Xcode previews.
+v2.0.5 4/3/2024 Fixed so works on macOS.  Fixed so works in Swift Playgrounds (had to bring minimum iOS level up to 15.2).  Renamed projects in Package.swift to fix so previews load consistently in Swift Playgrounds and Xcode previews.  Re-worked resources so that custom symbols are accessable outside module.  Increased minimum macOS version since lowPowerMode requires macOS 12 minimum.
 v2.0.4 4/2/2024 Renamed project from DeviceTest to Device.  Fixed so supported on tvOS 14.  Added crash detection to newest Apple Watch models.  Backed minimum iOS version to iOS 14.  Changed watchOS minimum to 6.  Updated minimum deployment targets in README.  Added fallbacks for some iOS 15+ only features.
 v2.0.3 4/2/2024 Made screen size resolution width and height public.  Removed HardwareListView from Hardware.swift to prevent issues with integrations.
 v2.0.2 3/31/2024 Fixed so can run test app on iOS 15/16.  Added custom symbols for nicer UI and to make sure icons work on older iOS devices.  Added NFC, ApplePay, Barometer, and Ringer Switch to iPhones where missing.  Improved the display of the test view.
@@ -40,6 +40,7 @@ Planned features and anticipated API changes.  If you want to contribute, this i
 [ ] Improve test app user interface/layout.
 [ ] Add tests to complete code coverage.
 [ ] Create tests in such a way that they can be run in Previews and in the example App (may require a project dependency).
+[ ] Re-work so custom symbols are image constants rather than using strings which may be unavailable (perhaps use with symbol enum package?)
 [ ] See if there's a way to automate tests on various platform combinations.
 [ ] Support landscape on iPhone for test view and use size classes to re-layout.
 [ ] For devices that support multiple orientations, automatically apply current orientation to the symbol name for current device.

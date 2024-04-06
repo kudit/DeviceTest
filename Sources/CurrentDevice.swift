@@ -141,7 +141,12 @@ final class ActualHardwareDevice: CurrentDevice {
             return true
         }
         // Note: this will be "false" under Catalyst which is what we want.
-        return ProcessInfo().isiOSAppOnMac
+        if #available(watchOS 7.0, *) {
+            return ProcessInfo().isiOSAppOnMac
+        } else {
+            // Fallback on earlier versions
+            return false
+        }
     }
 
     /// Gets the identifier from the system, such as "iPhone7,1".

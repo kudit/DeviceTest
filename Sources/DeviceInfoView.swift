@@ -71,9 +71,14 @@ extension Bool {
     }
     static func nativeLocalCheck(_ symbolName: String) -> Bool {
 #if canImport(UIKit)
-        return UIImage(named: symbolName, in: Bundle.module, compatibleWith: nil) != nil
+        return UIImage(named: symbolName, in: Bundle.module, with: nil) != nil
 #elseif canImport(AppKit)
-        return NSImage(named: symbolName, in: Bundle.module) != nil
+        if #available(macOS 13, *) {
+            return NSImage(symbolName: symbolName, bundle: Bundle.module, variableValue: 1) != nil
+        } else {
+            // probably won't work in macOS 12
+            return NSImage(named: symbolName) != nil
+        }
 #endif
     }
 }
@@ -101,7 +106,12 @@ public struct CapabilitiesTextView: View {
             // and watches don't need watch size
             else if case .watchSize = capability {}
             else {
-                output = output + Text(Image(symbolName: capability.symbolName)) + Text(" ")
+                if #available(watchOS 7.0, *) {
+                    output = output + Text(Image(symbolName: capability.symbolName)) + Text(" ")
+                } else {
+                    // Fallback on earlier versions
+                    output = output + Text("\(capability.symbolName)") + Text(" ")
+                }
             }
         }
         return output
@@ -184,7 +194,7 @@ public struct DeviceListView: View {
             ForEach(sectioned, id: \.0) { section in
                 Section {
                     ForEach(section.1, id: \.device) { device in
-                        if #available(tvOS 16.0, *) {
+                        if #available(tvOS 16.0, watchOS 7.0, *) {
                             DeviceInfoView(device: device)
                             // This is only for testing anyways
                                 .onTapGesture {

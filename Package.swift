@@ -12,7 +12,7 @@ let package = Package(
     name: "Device",
     platforms: [
         .iOS("15.2"),
-        .macOS("11.0"),
+        .macOS("12.0"),
         .tvOS("14.0"),
         .watchOS("6.0"),
         .visionOS("1.0")

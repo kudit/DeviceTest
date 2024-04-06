@@ -7,12 +7,7 @@
 		<key>Device Library.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
-		<key>Device.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>1</integer>
 		</dict>
 		<key>DeviceTest.swiftpm-Package.xcscheme_^#shared#^_</key>
 		<dict>
@@ -22,7 +17,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>Device</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>DeviceTest.swiftpm</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DeviceTests</key>
 		<dict>
 			<key>primary</key>
 			<true/>
